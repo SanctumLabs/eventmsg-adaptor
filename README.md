@@ -1,6 +1,6 @@
 # Message Gambol
 
-
+Message Publisher and Subscriber library for handling event publishing and subscription to different Platforms that handle message/event publishing and subscribing
 
 ## Getting started
 

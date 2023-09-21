@@ -10,9 +10,10 @@ from gambol.schema import (
     ListenExpression,
 )
 
+
 class BaseAdapter(ABC):
     """Base Adapter from which other adapters will extend. This provides a uniform way for adapters to be used in the library"""
-    
+
     @abstractmethod
     def publish(self, destination: Destination, event: Event) -> Any:
         """Publishes an event to a given destination
@@ -25,9 +26,14 @@ class BaseAdapter(ABC):
             Any: A catch all for what the publisher returns on publishing an event.
         """
         pass
-    
+
     @abstractmethod
-    def subscribe(self, listen_expression: ListenExpression, callback: ListenerCallback, event_body_type: Type[EventBody]) -> None:
+    def subscribe(
+        self,
+        listen_expression: ListenExpression,
+        callback: ListenerCallback,
+        event_body_type: Type[EventBody],
+    ) -> None:
         """Subscribes on a given lister_expression and passes the event received to the given callback.
 
         Args:
@@ -36,7 +42,7 @@ class BaseAdapter(ABC):
             event_body_type (Type[EventBody]): type of event
         """
         pass
-    
+
     @abstractmethod
     def ack(self, message: InboundMessage) -> Any:
         """Acknowledges a given message
@@ -48,7 +54,7 @@ class BaseAdapter(ABC):
             Any: Catch all for any type on performing the acknowledgement of a message
         """
         pass
-    
+
     @abstractmethod
     def nack(self, message: InboundMessage) -> Any:
         """None Acknowledgement of a given message
@@ -63,9 +69,10 @@ class BaseAdapter(ABC):
 
 
 class BaseAsyncAdapter(ABC):
-    """Base Async Adapter from which other adapters can extend when handling async operations. 
-    This provides a uniform way for adapters to be used in the library in an async fashion"""
-    
+    """Base Async Adapter from which other adapters can extend when handling async operations.
+    This provides a uniform way for adapters to be used in the library in an async fashion
+    """
+
     @abstractmethod
     async def publish(self, destination: Destination, event: Event) -> Any:
         """Publishes an event to a given destination
@@ -78,18 +85,20 @@ class BaseAsyncAdapter(ABC):
             Any: A catch all for what the publisher returns on publishing an event.
         """
         pass
-    
+
     @abstractmethod
-    async def subscribe(self, listen_expression: ListenExpression, callback: ListenerCallback, event_body_type: Type[EventBody]) -> None:
-        """Subscribes on a given lister_expression and passes the event received to the given callback.
+    async def listen(self, listeners: List[AsyncListener]) -> None:
+        """Listens on a list of async listeners
 
         Args:
-            listen_expression (ListenExpression): Expression that is parsed and used to listen for messages
-            callback (ListenerCallback): callback function that is called on receiving a message
-            event_body_type (Type[EventBody]): type of event
+            listeners (List[AsyncListener]): list of async listeners
         """
         pass
-    
+
+    async def close(self) -> None:
+        """Close connection"""
+        pass
+
     @abstractmethod
     async def ack(self, message: InboundMessage) -> Any:
         """Acknowledges a given message
@@ -101,7 +110,7 @@ class BaseAsyncAdapter(ABC):
             Any: Catch all for any type on performing the acknowledgement of a message
         """
         pass
-    
+
     @abstractmethod
     async def nack(self, message: InboundMessage) -> Any:
         """None Acknowledgement of a given message

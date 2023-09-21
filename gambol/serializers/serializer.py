@@ -1,9 +1,6 @@
-from typing import Any, Protocol, TypeVar, cast
-
-from google.protobuf.message import Message
+from typing import Any, Protocol
 
 from gambol.schema import (
-    PydanticEventBody,
     SerializationContext,
     SerializedMessage,    
 )

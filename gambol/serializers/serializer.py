@@ -13,8 +13,6 @@ class SerializationError(Exception):
     pass
 
 
-ProtobufMessage_T = TypeVar("ProtobufMessage_T", bound=Message)
-
 class Serializer(Protocol):
     """Defines a serializer which handles the serialization and deserialization of a message. Note that it typically has 2 methods, Serialize
     and deserialize. This class defines a protocol that serializers follow and can be used as a type annotation when defining a serializer. Especially

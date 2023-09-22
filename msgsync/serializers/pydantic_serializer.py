@@ -3,7 +3,7 @@
 from typing import Any, Type, TypeVar
 import orjson
 
-from gambol.schema import (
+from msgsync.schema import (
     PydanticEventBody,
     SerializationContext,
     SerializationFormat,

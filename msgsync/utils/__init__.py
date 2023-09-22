@@ -4,7 +4,7 @@ from unittest.mock import AsyncMock
 
 from google.protobuf.message import Message
 
-from gambol.schema import (
+from msgsync.schema import (
     AsyncEventCallback,
     Destination,
     Event,

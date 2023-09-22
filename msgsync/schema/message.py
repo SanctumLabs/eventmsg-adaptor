@@ -4,7 +4,7 @@ from typing import TypeVar, Mapping, Generic
 from pydantic import BaseModel
 from pydantic.generics import GenericModel
 
-from gambol.strenum import StrEnum
+from msgsync.strenum import StrEnum
 from .event import Event
 
 

@@ -1,6 +1,6 @@
 from typing import Any, Protocol
 
-from gambol.schema import (
+from msgsync.schema import (
     SerializationContext,
     SerializedMessage,    
 )

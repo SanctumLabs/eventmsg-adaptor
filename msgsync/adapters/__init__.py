@@ -2,10 +2,10 @@ from typing import Union
 
 from confluent_kafka.schema_registry import SchemaRegistryClient
 
-from gambol.config import Config, KafkaConfig
-from gambol.serializers import Serializer
-from gambol.serializers.confluent_protobuf_serializer import ConfluentProtobufSerializer
-from gambol.serializers.protobuf_serializer import ProtobufSerializer
+from msgsync.config import Config, KafkaConfig
+from msgsync.serializers import Serializer
+from msgsync.serializers.confluent_protobuf_serializer import ConfluentProtobufSerializer
+from msgsync.serializers.protobuf_serializer import ProtobufSerializer
 
 from .base import BaseAdapter, BaseAsyncAdapter
 from .kafka.aiokafka import AIOKafkaAdapter

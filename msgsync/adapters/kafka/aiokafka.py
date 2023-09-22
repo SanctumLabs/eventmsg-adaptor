@@ -7,10 +7,10 @@ from typing import Any, List, Optional, Dict, Type
 
 from aiokafka import AIOKafkaConsumer, TopicPartition, AIOKafkaProducer, ConsumerRecord
 
-from gambol.adapters.base import BaseAsyncAdapter
-from gambol.serializers import Serializer, SerializationError
-from gambol.strenum import StrEnum
-from gambol.schema import (
+from msgsync.adapters.base import BaseAsyncAdapter
+from msgsync.serializers import Serializer, SerializationError
+from msgsync.strenum import StrEnum
+from msgsync.schema import (
     AsyncListener,
     Destination,
     Event,

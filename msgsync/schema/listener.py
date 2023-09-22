@@ -3,7 +3,7 @@
 from typing import Type
 from pydantic import BaseModel
 
-from gambol.strenum import StrEnum
+from msgsync.strenum import StrEnum
 
 from .event import EventBody
 from .listen_expression import ListenExpression

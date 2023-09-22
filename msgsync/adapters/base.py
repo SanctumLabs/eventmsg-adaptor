@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 from typing import Any, List, Type
-from gambol.schema import (
+from msgsync.schema import (
     AsyncListener,
     Destination,
     Event,

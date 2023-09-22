@@ -13,7 +13,7 @@ from confluent_kafka.serialization import (
     SerializationContext as ConfluentSerializationContext,
 )
 
-from gambol.schema import SerializationContext, SerializedMessage, SerializationFormat
+from msgsync.schema import SerializationContext, SerializedMessage, SerializationFormat
 
 from . import SerializationError, Serializer
 

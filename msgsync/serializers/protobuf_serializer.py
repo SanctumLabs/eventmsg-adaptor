@@ -2,7 +2,7 @@ from typing import TypeVar, Type
 
 from google.protobuf.message import Message
 
-from gambol.schema import (
+from msgsync.schema import (
     SerializationContext,
     SerializationFormat,
     SerializedMessage,    

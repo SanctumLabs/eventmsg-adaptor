@@ -10,7 +10,7 @@ from gambol.schema import (
     SerializedMessage,    
 )
 
-from .serializer import Serializer, SerializationError
+from . import Serializer, SerializationError
 
 
 PydanticModel_T = TypeVar("PydanticModel_T", bound=PydanticEventBody)

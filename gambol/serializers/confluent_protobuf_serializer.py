@@ -15,7 +15,7 @@ from confluent_kafka.serialization import (
 
 from gambol.schema import SerializationContext, SerializedMessage, SerializationFormat
 
-from .serializer import SerializationError, Serializer
+from . import SerializationError, Serializer
 
 ProtobufMessage_T = TypeVar("ProtobufMessage_T", bound=Message)
 

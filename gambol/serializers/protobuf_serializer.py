@@ -8,7 +8,7 @@ from gambol.schema import (
     SerializedMessage,    
 )
 
-from .serializer import Serializer, SerializationError
+from . import Serializer, SerializationError
 
 ProtobufMessage_T = TypeVar("ProtobufMessage_T", bound=Message)
 

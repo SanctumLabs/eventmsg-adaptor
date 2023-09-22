@@ -8,7 +8,7 @@ from typing import Any, List, Optional, Dict, Type
 from aiokafka import AIOKafkaConsumer, TopicPartition, AIOKafkaProducer, ConsumerRecord
 
 from gambol.adapters.base import BaseAsyncAdapter
-from gambol.serializers.serializer import Serializer, SerializationError
+from gambol.serializers import Serializer, SerializationError
 from gambol.strenum import StrEnum
 from gambol.schema import (
     AsyncListener,

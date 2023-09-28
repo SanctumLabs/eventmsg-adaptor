@@ -3,7 +3,7 @@
 from typing import Any, Type, TypeVar
 import orjson
 
-from msgsync.schema import (
+from eventmsg_adaptor.schema import (
     PydanticEventBody,
     SerializationContext,
     SerializationFormat,

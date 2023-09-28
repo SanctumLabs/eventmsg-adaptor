@@ -8,13 +8,14 @@ import time_machine
 
 from confluent_kafka.schema_registry import SchemaRegistryClient, RegisteredSchema
 
+
 @pytest.fixture(autouse=True)
 def auto_freeze_time() -> Generator[Any, Any, None]:
     with time_machine.travel(
-        destination=datetime(2020, 9, 8, 19, 53, 46).astimezone(),
-        tick=False
+        destination=datetime(2020, 9, 8, 19, 53, 46).astimezone(), tick=False
     ):
         yield
+
 
 @pytest.fixture(autouse=True)
 def fix_uuid4() -> Generator[Any, Any, None]:
@@ -24,7 +25,8 @@ def fix_uuid4() -> Generator[Any, Any, None]:
         return_value=uuid.UUID("fae9ef15-06f0-46b9-95f1-2a75dd482687"),
     ):
         yield
-        
+
+
 @pytest.fixture()
 def mock_schema_registry_client() -> Generator[MagicMock, Any, None]:
     mock_schema_registry_client = create_autospec(SchemaRegistryClient)

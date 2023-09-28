@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "msgsync"
+name = "eventmsg_adaptor"
 version = "0.0.0"
 description = "Message Publisher and Subscriber library"
 authors = ["Sanctum Labs <sanctumlabs@gmail.com>"]

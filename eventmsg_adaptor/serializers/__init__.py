@@ -1,6 +1,6 @@
 from typing import Any, Protocol
 
-from msgsync.schema import (
+from eventmsg_adaptor.schema import (
     SerializationContext,
     SerializedMessage,    
 )

@@ -1,4 +1,4 @@
-# Message Sync
+# Event Message Adaptor
 
 Message Publisher and Subscriber library for handling event publishing and subscription to different Platforms that handle message/event publishing and subscribing
 
@@ -15,14 +15,14 @@ Already a pro? Just edit this README.md and make it your own. Want to make it ea
 
 ```
 cd existing_repo
-git remote add origin https://gitlab.com/sanctumlabs/libraries/msgsync.git
+git remote add origin https://gitlab.com/sanctumlabs/libraries/eventmsg_adaptor.git
 git branch -M main
 git push -uf origin main
 ```
 
 ## Integrate with your tools
 
-- [ ] [Set up project integrations](https://gitlab.com/sanctumlabs/libraries/msgsync/-/settings/integrations)
+- [ ] [Set up project integrations](https://gitlab.com/sanctumlabs/libraries/eventmsg_adaptor/-/settings/integrations)
 
 ## Collaborate with your team
 

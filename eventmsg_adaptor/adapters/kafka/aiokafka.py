@@ -7,10 +7,10 @@ from typing import Any, List, Optional, Dict, Type
 
 from aiokafka import AIOKafkaConsumer, TopicPartition, AIOKafkaProducer, ConsumerRecord
 
-from msgsync.adapters.base import BaseAsyncAdapter
-from msgsync.serializers import Serializer, SerializationError
-from msgsync.strenum import StrEnum
-from msgsync.schema import (
+from eventmsg_adaptor.adapters.base import BaseAsyncAdapter
+from eventmsg_adaptor.serializers import Serializer, SerializationError
+from eventmsg_adaptor.strenum import StrEnum
+from eventmsg_adaptor.schema import (
     AsyncListener,
     Destination,
     Event,

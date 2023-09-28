@@ -3,8 +3,8 @@ from uuid import UUID
 from aiokafka import ConsumerRecord
 from google.protobuf.message import Message
 from sanctumlabs.messageschema.events.envelope.v1.envelope_pb2 import EventFields
-from msgsync.schema import EventHeaders, EventBody, PydanticEventBody
-from msgsync.utils import parse_event_name_and_version_from_protobuf_message, normalise_destination
+from eventmsg_adaptor.schema import EventHeaders, EventBody, PydanticEventBody
+from eventmsg_adaptor.utils import parse_event_name_and_version_from_protobuf_message, normalise_destination
 
 
 

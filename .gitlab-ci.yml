@@ -5,9 +5,26 @@
 # Container Scanning customization: https://docs.gitlab.com/ee/user/application_security/container_scanning/#customizing-the-container-scanning-settings
 # Note that environment variables can be set in several places
 # See https://docs.gitlab.com/ee/ci/variables/#cicd-variable-precedence
-stages:
-- test
-sast:
-  stage: test
+image: python:3.11
+
 include:
 - template: Security/SAST.gitlab-ci.yml
+
+stages:
+  - lint
+  - test
+  - buld
+  - package
+  - release
+
+before_script:
+  - pip install poetry==1.5.1
+  - poetry install -E adapters --no-interaction --no-ansi
+
+lint-mypy:
+  stage: lint
+  script: make lint-mypy
+
+sast:
+  stage: test
+

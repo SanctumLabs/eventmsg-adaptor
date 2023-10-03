@@ -2,7 +2,6 @@
 from typing import TypeVar, Mapping, Generic
 
 from pydantic import BaseModel
-from pydantic.generics import GenericModel
 
 from eventmsg_adaptor.strenum import StrEnum
 from .event import Event
@@ -12,7 +11,7 @@ RawMessage_T = TypeVar("RawMessage_T")
 MessageAttributes_T = TypeVar("MessageAttributes_T", bound=Mapping)
 
 
-class InboundMessage(GenericModel, Generic[RawMessage_T, MessageAttributes_T]):
+class InboundMessage(BaseModel, Generic[RawMessage_T, MessageAttributes_T]):
     """InboundMessage is a generic model representation of an inbound message. This wraps the event along the raw representation of the message
     that is not yet serialized to a specific format. It further contains attributes that could be used by receivers and senders to add more
     context to a message on delivery.

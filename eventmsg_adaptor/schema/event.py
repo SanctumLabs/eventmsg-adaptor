@@ -7,8 +7,7 @@ from typing import Generic, Optional, TypeVar, Union
 from uuid import UUID
 
 from google.protobuf.message import Message
-from pydantic import BaseModel, Extra
-from pydantic.generics import GenericModel
+from pydantic import BaseModel
 
 from .destination import Destination
 
@@ -19,7 +18,7 @@ class PydanticEventBody(BaseModel):
     class Config:
         """Extra configuration specific to Pydantic allowing extra types to be added
         """
-        extra = Extra.allow
+        extra = "allow"
 
     @property
     def event_name(self) -> str:
@@ -61,7 +60,7 @@ class EventHeaders(BaseModel):
 EventBody_T = TypeVar("EventBody_T", bound=EventBody)
 
 
-class Event(GenericModel, Generic[EventBody_T]):
+class Event(BaseModel, Generic[EventBody_T]):
     """Represents the Event object in a stream
     """
     headers: EventHeaders

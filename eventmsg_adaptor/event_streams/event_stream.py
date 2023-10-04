@@ -22,7 +22,7 @@ logger = logging.getLogger(__name__)
 
 
 class EventStream(BaseEventStream):
-    def __init__(self, adapter: BaseAdapter, event_source: str | None):
+    def __init__(self, adapter: BaseAdapter, event_source: str):
         self._adapter: BaseAdapter = adapter
 
         super().__init__(event_source)

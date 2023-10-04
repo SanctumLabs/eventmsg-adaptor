@@ -1,5 +1,5 @@
 from .event import Event, EventHeaders, EventBody, PydanticEventBody
-from .callbacks import AsyncEventCallback, EventCallback, ExceptionHandler, AsyncExceptionHandler
+from .callbacks import AsyncEventCallback, EventCallback, ExceptionHandler, AsyncExceptionHandler, ListenerCallback
 from .destination import Destination
 from .listen_expression import ListenExpression
 from .message import SerializationFormat, SerializedMessage, InboundMessage
@@ -23,5 +23,6 @@ __all__ = [
     "EventHeaders",  # for backwards compat
     "InboundMessage",
     "ExceptionHandler",
-    "ListenerState"
+    "ListenerState",
+    "ListenerCallback"
 ]

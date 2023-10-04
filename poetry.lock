@@ -1493,6 +1493,21 @@ files = [
 typing-extensions = ">=4.6.0,<4.7.0 || >4.7.0"
 
 [[package]]
+name = "pydantic-settings"
+version = "2.0.3"
+description = "Settings management using Pydantic"
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "pydantic_settings-2.0.3-py3-none-any.whl", hash = "sha256:ddd907b066622bd67603b75e2ff791875540dc485b7307c4fffc015719da8625"},
+    {file = "pydantic_settings-2.0.3.tar.gz", hash = "sha256:962dc3672495aad6ae96a4390fac7e593591e144625e5112d359f8f67fb75945"},
+]
+
+[package.dependencies]
+pydantic = ">=2.0.1"
+python-dotenv = ">=0.21.0"
+
+[[package]]
 name = "pylint"
 version = "2.17.5"
 description = "python code static checker"
@@ -2402,4 +2417,4 @@ adapters = ["aiokafka", "boto3", "confluent-kafka"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "fb8a2688b90f83a738fcfe5d8e9ad7296cbcae82a5a588f1dd794f578ffab063"
+content-hash = "997a18b39d65b7942b5d08179f0f4a61824ac6c5c759f8beab68e2a0c77c8b71"

@@ -1,11 +1,15 @@
 """Configuration for Root Adapter
 """
-from typing import Optional
-from pydantic import BaseModel, BaseSettings
+from typing import Optional, Annotated, TypeVar
+from pydantic import BaseModel, Field
+from pydantic_settings import BaseSettings
 
 from .kafka import KafkaConfig
 from .sqs import SQSConfig
 
+T = TypeVar("T")
+
+EnvField = Annotated[T, Field]
 
 class AdapterConfigs(BaseModel):
     kafka: Optional[KafkaConfig] = KafkaConfig()
@@ -18,7 +22,6 @@ class Config(BaseSettings):
     service_name: str = "sanctumlabs"
     default_adapter: str = "kafka"
     adapters: Optional[AdapterConfigs] = AdapterConfigs()
-
-    class Config:
-        env_prefix = "eventing_"
-        env_nested_delimiter = "__"
+    
+    env_prefix: EnvField[str] = "eventing_"
+    env_nested_delimiter: EnvField[str] = "__"

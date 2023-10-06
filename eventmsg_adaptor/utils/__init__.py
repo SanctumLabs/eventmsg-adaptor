@@ -114,7 +114,7 @@ def parse_destination_str(destination_str: str) -> Destination:
         topic = destination_str
         parsed_subtopic = None
 
-    return Destination(topic=topic, subtopic=parsed_subtopic, is_fifo=is_fifo)
+    return Destination(topic=topic, sub_topic=parsed_subtopic, is_fifo=is_fifo)
 
 
 def parse_event_name_and_version_from_protobuf_message(message: Message) -> Tuple[str, str]:

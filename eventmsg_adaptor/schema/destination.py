@@ -11,12 +11,12 @@ class Destination(BaseModel):
     is_fifo: bool = False
     
     @property
-    def paths(self) -> str:
-        """Returns the full path of the destination. If a subtopic is included it will be appended and returned
+    def path(self) -> str:
+        """Returns the full path of the destination. If a sub_topic is included it will be appended and returned
         in the format topic.sub_topic e.g. if topic=deliveries and sub_topic=tacos it will be: deliveries.tacos
 
         Returns:
-            str: topic including subtopic if available
+            str: topic including sub_topic if available
         """
         parts = [self.topic]
         
@@ -31,8 +31,8 @@ class Destination(BaseModel):
         Returns:
             str: string representation of destination
         """
-        destination_str = self.paths
-        
+        destination_str = self.path
+
         if self.is_fifo:
             destination_str = f"{destination_str}::fifo"
 

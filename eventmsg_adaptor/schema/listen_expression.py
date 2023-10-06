@@ -31,16 +31,17 @@ class ListenExpression(BaseModel):
             return False
 
         if (
-            self.destination.subtopic
-            and self.destination.subtopic != event_destination.subtopic
+            self.destination.sub_topic
+            and self.destination.sub_topic != event_destination.sub_topic
         ):
             return False
 
         if self.event_name and self.event_name != event.headers.event_name:
             return False
 
-        if self.version != event.headers.version:
-            return False
+        if self.version:
+            if self.version != event.headers.version:
+                return False
 
         return True
 

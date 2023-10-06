@@ -17,14 +17,14 @@ from eventmsg_adaptor.utils import (
         ("shop", Destination(topic="shop")),
         ("shop.", Destination(topic="shop")),
         ("shop.*", Destination(topic="shop")),
-        ("shop.order", Destination(topic="shop", subtopic="order")),
-        ("shop.order.*", Destination(topic="shop", subtopic="order")),
+        ("shop.order", Destination(topic="shop", sub_topic="order")),
+        ("shop.order.*", Destination(topic="shop", sub_topic="order")),
         ("shop::fifo", Destination(topic="shop", is_fifo=True)),
         ("shop.*::fifo", Destination(topic="shop", is_fifo=True)),
-        ("shop.order::fifo", Destination(topic="shop", subtopic="order", is_fifo=True)),
+        ("shop.order::fifo", Destination(topic="shop", sub_topic="order", is_fifo=True)),
         (
             "shop.order.*::fifo",
-            Destination(topic="shop", subtopic="order", is_fifo=True),
+            Destination(topic="shop", sub_topic="order", is_fifo=True),
         ),
     ],
 )

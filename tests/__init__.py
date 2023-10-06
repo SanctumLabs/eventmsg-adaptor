@@ -179,7 +179,7 @@ ORDER_PAID_EVENT = Event(
     headers=EventHeaders(
         id=UUID("fae9ef15-06f0-46b9-95f1-2a75dd482687"),
         event_name="order_paid",
-        destination=Destination(topic="shop", subtopic="order"),
+        destination=Destination(topic="shop", sub_topic="order"),
         version="1.0",
         timestamp=datetime(2020, 9, 8, 19, 53, 46),
         source="my-service",
@@ -240,7 +240,7 @@ ORDER_PLACED_EVENT = Event(
     headers=EventHeaders(
         id=UUID("fae9ef15-06f0-46b9-95f1-2a75dd482687"),
         event_name="order_placed",
-        destination=Destination(topic="shop", subtopic="order"),
+        destination=Destination(topic="shop", sub_topic="order"),
         version="1.0",
         timestamp=datetime(2020, 9, 8, 19, 53, 46),
         source="my-service",
@@ -263,7 +263,7 @@ BUSINESS_REGISTERED_EVENT = Event(
         id=UUID("7eb3e682-5e08-4540-9a74-ff94a43f27e1"),
         event_name="business_registered",
         destination=Destination(
-            topic="merchant_profile", subtopic="business", is_fifo=True
+            topic="merchant_profile", sub_topic="business", is_fifo=True
         ),
         version="1.0",
         timestamp=datetime(2020, 9, 8, 19, 53, 46),

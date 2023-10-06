@@ -153,7 +153,7 @@ class AsyncEventStream(BaseEventStream):
                         logger.exception(e)
 
             logger.debug(
-                f"Registering listener to events matching listen expression {listen_expression} ({listen_expression.dict()})"
+                f"Registering listener to events matching listen expression {listen_expression} ({listen_expression.model_dump()})"
             )
 
             listener = AsyncListener(

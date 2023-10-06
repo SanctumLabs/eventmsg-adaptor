@@ -9,6 +9,7 @@ from google.protobuf.timestamp_pb2 import Timestamp
 from sanctumlabs.messageschema.events.envelope.v1.envelope_pb2 import EventFields, StandardMessageFields
 from sanctumlabs.messageschema.messages.notifications.email.v1.events_pb2 import EmailV1
 from sanctumlabs.messageschema.events.notifications.email.v1.events_pb2 import EmailSent
+from sanctumlabs.messageschema.events.notifications.email.v1.data_pb2 import Email, EmailStatus
 
 from eventmsg_adaptor.adapters import BaseAdapter
 from eventmsg_adaptor.event_streams import EventStream
@@ -97,7 +98,13 @@ EMAIL_SENT_PROTOBUF_MESSAGE = EmailV1(
         ),
     ),
     email_sent=EmailSent(
-        
+        email=Email(
+            id="fae9ef15-06f0-46b9-95f1-2a75dd482687",
+            to="bot@example.com",
+            subject="Testing 123",
+            message="Robot Schematics",
+            status=EmailStatus.PENDING
+        )
     )
 )
 

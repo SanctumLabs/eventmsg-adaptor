@@ -72,7 +72,7 @@ class AIOKafkaAdapter(BaseAsyncAdapter):
 
     @property
     def sasl_password(self) -> Optional[str]:
-        return self.sasl_password
+        return self._sasl_password
 
     @property
     def consumer(self) -> AIOKafkaConsumer:

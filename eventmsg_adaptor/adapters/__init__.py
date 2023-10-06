@@ -27,18 +27,18 @@ def factory(adapter_name: str, config: Config) -> Union[BaseAdapter, BaseAsyncAd
     adapter_configs = config.adapters
 
     if not adapter_configs:
-        raise Exception("You musth configure at least 1 adapter")
+        raise Exception("You must configure at least one adapter in the config.")
 
     if adapter_name == "sqs":
         if not adapter_configs.sqs:
-            raise Exception("You must specify an SQSConfig when using the sqs adapter")
+            raise Exception("You must specify an SQSConfig when using the sqs adapter.")
 
         return _make_sqs_adapter(sqs_config=adapter_configs.sqs, base_config=config)
 
     elif adapter_name == "aiosqs":
         if not adapter_configs.sqs:
             raise Exception(
-                "You must specify an SQSConfig when using the aiosqs adapter"
+                "You must specify an SQSConfig when using the aiosqs adapter."
             )
 
         return _make_aiosqs_adapter(sqs_config=adapter_configs.sqs, base_config=config)
@@ -46,14 +46,14 @@ def factory(adapter_name: str, config: Config) -> Union[BaseAdapter, BaseAsyncAd
     elif adapter_name == "aiokafka":
         if not adapter_configs.kafka:
             raise Exception(
-                "You must specify a KafkaConfig when using the aiokafka adapter"
+                "You must specify a KafkaConfig when using the aiokafka adapter."
             )
 
         return _make_aiokafka_adapter(
             kafka_config=adapter_configs.kafka, base_config=config
         )
     else:
-        raise Exception(f"The adapter ${adapter_name} is not supported")
+        raise Exception(f"The adapter {adapter_name} is not supported.")
 
 
 def _make_sqs_adapter(sqs_config, base_config: Config):
@@ -72,25 +72,26 @@ def _make_aiokafka_adapter(
 
         serializer: Serializer
 
-        if kafka_config.schema_registry.schema_registry_url:
-            schema_registry_client = SchemaRegistryClient(
-                {
-                    "url": kafka_config.schema_registry.schema_registry_url,
-                    "basic.auth.user.info": kafka_config.schema_registry.schema_registry_user_info,
-                }
-            )
+        if kafka_config.schema_registry:
+            if kafka_config.schema_registry.schema_registry_url:
+                schema_registry_client = SchemaRegistryClient(
+                    {
+                        "url": kafka_config.schema_registry.schema_registry_url,
+                        "basic.auth.user.info": kafka_config.schema_registry.schema_registry_user_info,
+                    }
+                )
 
-            serializer = ConfluentProtobufSerializer(
-                schema_registry_client=schema_registry_client
-            )
+                serializer = ConfluentProtobufSerializer(
+                    schema_registry_client=schema_registry_client
+                )
         else:
             serializer = ProtobufSerializer()
 
         return AIOKafkaAdapter(
             bootstrap_servers=kafka_config.bootstrap_servers,
             group_id=base_config.service_name,
-            sasl_username=kafka_config.security.sasl_username,
-            sasl_password=kafka_config.security.sasl_password,
+            sasl_username=kafka_config.security.sasl_username if kafka_config.security else None,
+            sasl_password=kafka_config.security.sasl_password if kafka_config.security else None,
             serializer=serializer,
         )
 

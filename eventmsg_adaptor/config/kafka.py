@@ -51,7 +51,7 @@ class KafkaConfig(BaseModel):
     """
     
     # bootstrap_servers is a list of host to port mappings of Kafka Brokers in the format host:port
-    bootstrap_servers: List[str] = ["localhost:9090"]
+    bootstrap_servers: List[str] = ["localhost:9092"]
     client_id: Optional[str] = None
     security: Optional[KafkaSecurityProtocolConfig] = None
     schema_registry: Optional[KafkaSchemaRegistryConfig] = None

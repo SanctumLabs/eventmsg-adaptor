@@ -43,7 +43,7 @@ def make_kafka_headers_from_event_headers(
         "group_id": headers.group_id or "",
     }
 
-    return [(header, value.encode("utf-8")) for header, value in kafka_headers.items]
+    return [(header, value.encode("utf-8")) for header, value in kafka_headers.items()]
 
 
 def parse_event_headers(event_body: EventBody, message: ConsumerRecord) -> EventHeaders:
@@ -82,7 +82,7 @@ def parse_event_headers(event_body: EventBody, message: ConsumerRecord) -> Event
             group_id=event_fields.aggregate_id or None
         )
     elif isinstance(event_body, PydanticEventBody):
-        parsed_kafka_headers = parsed_kafka_headers(message.headers)
+        parsed_kafka_headers = parse_kafka_headers(message.headers)
         
         if "destination" in parsed_kafka_headers:
             parsed_kafka_headers["destination"] = normalise_destination(parsed_kafka_headers["destination"])

@@ -80,7 +80,7 @@ class AIOKafkaAdapter(BaseAsyncAdapter):
             self._consumer = AIOKafkaConsumer(
                 group_id=self._group_id,
                 bootstrap_servers=self._bootstrap_servers,
-                sasl_plain_username=self._sasl_password,
+                sasl_plain_username=self.sasl_username,
                 sasl_plain_password=self._sasl_password,
                 security_protocol="SASL_SSL"
                 if self.sasl_username and self.sasl_password
@@ -142,9 +142,9 @@ class AIOKafkaAdapter(BaseAsyncAdapter):
 
     async def listen(self, listeners: List[AsyncListener]) -> None:
         if self._consumer_state == ConsumerState.STARTING:
-            raise Exception("The consumer is already in the process of starting up")
+            raise Exception("The consumer is already in the process of starting up.")
         elif self._is_consumer_running:
-            raise Exception("The consumer is already running")
+            raise Exception("The consumer has already been started.")
 
         try:
             self._consumer_state = ConsumerState.STARTING
@@ -159,6 +159,14 @@ class AIOKafkaAdapter(BaseAsyncAdapter):
 
             topics = list(topic_mappings.keys())
 
+            logger.debug(f"Subscribing consumer to topics {', '.join(topics)}")
+            
+            self.consumer.subscribe(topics, listener=self._rebalance_listener)
+            
+            logger.debug("Starting consumer")
+            
+            await self.consumer.start()
+            
             logger.debug("Consumer has started successfully")
 
             self._consumer_state = ConsumerState.RUNNING

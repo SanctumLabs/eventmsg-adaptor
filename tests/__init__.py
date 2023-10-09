@@ -108,7 +108,7 @@ EMAIL_SENT_PROTOBUF_MESSAGE = EmailV1(
     )
 )
 
-EMAIL_SENT_PROTOBUF_MESSAGE_AS_BYTES = b"\n0\n.\n$fae9ef15-06f0-46b9-95f1-2a75dd482687\x1a\x06\x08\xca\xc2\xdf\xfa\x05\x12.\n\x06\x08\xb0\xbe\x9f\xa6\x06\x12$2e8a249a-001c-4880-a8b0-0a84b2811a59"
+EMAIL_SENT_PROTOBUF_MESSAGE_AS_BYTES = b'\n0\n.\n$fae9ef15-06f0-46b9-95f1-2a75dd482687\x1a\x06\x08\xca\xc2\xdf\xfa\x05"v\nt\n$fae9ef15-06f0-46b9-95f1-2a75dd482687\x1a\x01b\x1a\x01o\x1a\x01t\x1a\x01@\x1a\x01e\x1a\x01x\x1a\x01a\x1a\x01m\x1a\x01p\x1a\x01l\x1a\x01e\x1a\x01.\x1a\x01c\x1a\x01o\x1a\x01m2\x0bTesting 123:\x10Robot SchematicsH\x0c'
 EMAIL_SENT_PROTOBUF_MESSAGE_WITH_SCHEMA_REGISTRY_FRAMING_AS_BYTES = (
     b"\x00\x00\x01\x86\xbc\x00" + EMAIL_SENT_PROTOBUF_MESSAGE_AS_BYTES
 )

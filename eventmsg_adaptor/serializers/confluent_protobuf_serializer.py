@@ -22,7 +22,7 @@ ProtobufMessage_T = TypeVar("ProtobufMessage_T", bound=Message)
 class ConfluentProtobufSerializer(Serializer):
     """Confluent specific protobuf serializer"""
     
-    def __init__(self, schema_registry_client: Optional[SchemaRegistryClient]):
+    def __init__(self, schema_registry_client: Optional[SchemaRegistryClient] = None):
         self.schema_registry_client = schema_registry_client
     
     def serialize(self, value: Message, serialization_context: SerializationContext) -> SerializedMessage:

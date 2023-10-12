@@ -1,4 +1,5 @@
 version: "3.8"
+
 services:
   broker:
     image: confluentinc/cp-kafka:7.4.0
@@ -212,6 +213,22 @@ services:
       KAFKA_REST_BOOTSTRAP_SERVERS: 'broker:29092'
       KAFKA_REST_LISTENERS: "http://0.0.0.0:8082"
       KAFKA_REST_SCHEMA_REGISTRY_URL: 'http://schema-registry:8081'
+    networks:
+      - irislabs
+
+  kafka-ui:  
+    image: provectuslabs/kafka-ui:latest
+    container_name: kafka-ui
+    environment:
+      KAFKA_CLUSTERS_0_NAME: kafka-cluster
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: broker:29092
+      KAFKA_CLUSTERS_0_JMXPORT: 9999
+      KAFKA_CLUSTERS_0_SCHEMAREGISTRY: "http://schema-registry:8081"
+    depends_on:
+      - broker
+      - schema-registry
+    ports:
+      - "9001:8080"
     networks:
       - irislabs
 

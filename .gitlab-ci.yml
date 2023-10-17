@@ -37,6 +37,7 @@ lint-mypy:
   script: make lint-mypy
 
 lint-flake8:
+  extends: ".lint"
   script: make lint-flake8
 
 sast:

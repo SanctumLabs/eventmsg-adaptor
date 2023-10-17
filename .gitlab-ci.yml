@@ -8,12 +8,15 @@
 image: python:3.11
 
 include:
-- template: Security/SAST.gitlab-ci.yml
+  - template: Security/SAST.gitlab-ci.yml
+  - project: sanctumlabs/tools/ci-workflows
+    file: .gitlab/templates/slack-notification.yml
 
 stages:
   - lint
   - test
-  - buld
+  - build
+  - tag
   - package
   - release
 
@@ -21,10 +24,155 @@ before_script:
   - pip install poetry==1.5.1
   - poetry install -E adapters --no-interaction --no-ansi
 
-lint-mypy:
+.lint:
   stage: lint
+  image: python:3.11
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+    - if: "$CI_COMMIT_BRANCH"
+    - if: "$CI_COMMIT_TAG"
+
+lint-mypy:
+  extends: ".lint"
   script: make lint-mypy
+
+lint-flake8:
+  script: make lint-flake8
 
 sast:
   stage: test
+  needs:
+    - lint-flake8
+    - lint-mypy
 
+.test:
+  stage: test
+  script:
+    - poetry run coverage run --source='./eventmsg_adaptor/' -m pytest -v --junitxml junit-report.xml tests/ 
+    - poetry run coverage xml -o coverage.xml
+    - poetry run coverage report -m
+  coverage: '/(?i)total.*? (100(?:\.0+)?\%|[1-9]?\d(?:\.\d+)?\%)$/'
+  artifacts:
+    reports:
+      junit: ./junit-report.xml
+      coverage_report:
+        coverage_format: cobertura
+        path: ./coverage.xml
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+    - if: "$CI_COMMIT_BRANCH"
+    - if: "$CI_COMMIT_TAG"
+
+test-3.9:
+  extends: ".test"
+  image: python:3.9
+  needs:
+    - lint-flake8
+    - lint-mypy
+
+test-3.10:
+  extends: ".test"
+  image: python:3.10
+  needs:
+    - lint-flake8
+    - lint-mypy
+
+test-3.11:
+  extends: ".test"
+  image: python:3.11
+  needs:
+    - lint-flake8
+    - lint-mypy
+
+.build:
+  stage: build
+  script:
+    - poetry self add "poetry-dynamic-versioning[plugin]"
+    - poetry build
+  artifacts:
+    paths:
+      - "dist"
+    when: always
+    expire_in: 1 week
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+    - if: "$CI_COMMIT_BRANCH"
+    - if: "$CI_COMMIT_TAG"
+
+build-3.9:
+  extends: ".build"
+  image: python:3.9
+  needs:
+    - test-3.9
+
+build-3.10:
+  extends: ".build"
+  image: python:3.10
+  needs:
+    - test-3.10
+
+build-3.11:
+  extends: ".build"
+  image: python:3.11
+  needs:
+    - test-3.11
+
+# publish the next tag automatically and only on the main branch when manually triggered
+publish-tag:
+  stage: tag
+  image: node:18
+  needs:
+    - build-3.9
+    - build-3.10
+    - build-3.11
+  variables:
+    GITLAB_TOKEN: ${GITLAB_ACCESS_TOKEN}
+  before_script:
+    - apt-get update && apt-get install -y --no-install-recommends git-core ca-certificates
+    - npm install -g semantic-release @semantic-release/gitlab @semantic-release/changelog @semantic-release/git
+  script:
+    - semantic-release
+  only:
+    - main
+  when: manual
+
+release_job:
+  stage: release
+  image: registry.gitlab.com/gitlab-org/release-cli:latest
+  rules:
+    - if: "$CI_COMMIT_TAG"
+  script:
+    - echo "running release_job"
+  release:
+    tag_name: '$CI_COMMIT_TAG'
+    description: '$CI_COMMIT_TAG'
+
+publish-pypi:
+  stage: package
+  image: python:3.11
+  needs:
+    - build-3.9
+    - build-3.10
+    - build-3.11
+  script:
+    - make publish-gitlab
+  only:
+    - tags
+
+slack-success:
+  needs:
+    - job: publish-tag
+      optional: true
+    - job: release_job
+      optional: true
+    - job: publish-pypi
+      optional: true
+
+slack-failure:
+  needs:
+    - job: publish-tag
+      optional: true
+    - job: release_job
+      optional: true
+    - job: publish-pypi
+      optional: true

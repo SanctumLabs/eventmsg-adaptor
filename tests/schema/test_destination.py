@@ -20,7 +20,10 @@ def test_destination_path(destination: Destination, expected_path: str) -> None:
     [
         (Destination(topic="shop"), "shop"),
         (Destination(topic="shop", sub_topic="order"), "shop.order"),
-        (Destination(topic="shop", sub_topic="order", is_fifo=True), "shop.order::fifo"),
+        (
+            Destination(topic="shop", sub_topic="order", is_fifo=True),
+            "shop.order::fifo",
+        ),
         (Destination(topic="shop", is_fifo=True), "shop::fifo"),
     ],
 )

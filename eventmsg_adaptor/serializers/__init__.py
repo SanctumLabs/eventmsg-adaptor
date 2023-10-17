@@ -2,11 +2,13 @@ from typing import Any, Protocol
 
 from eventmsg_adaptor.schema import (
     SerializationContext,
-    SerializedMessage,    
+    SerializedMessage,
 )
+
 
 class SerializationError(Exception):
     """Serialization error thrown when there is a failure to serialize a message"""
+
     pass
 
 
@@ -15,7 +17,10 @@ class Serializer(Protocol):
     and deserialize. This class defines a protocol that serializers follow and can be used as a type annotation when defining a serializer. Especially
     the case for serializer classes that do not define their types.
     """
-    def serialize(self, value: Any, serialization_context: SerializationContext) -> SerializedMessage:
+
+    def serialize(
+        self, value: Any, serialization_context: SerializationContext
+    ) -> SerializedMessage:
         """Defines serialization of a value/message given serialization context and returns a serialized message.
 
         Args:

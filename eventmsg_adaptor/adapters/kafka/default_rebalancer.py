@@ -16,7 +16,7 @@ PartitionsAssignedCallback = Callable[
 ]
 
 
-class DefaultRebalancer(ConsumerRebalanceListener):
+class DefaultRebalancer(ConsumerRebalanceListener): # type: ignore[misc]
     def __init__(
         self,
         on_partitions_revoked_callback: Optional[PartitionsRevokedCallback],
@@ -60,7 +60,7 @@ class DefaultRebalancer(ConsumerRebalanceListener):
 
             self._event.clear()
 
-    async def on_partitions_assigned(self, assigned):
+    async def on_partitions_assigned(self, assigned: List[TopicPartition]) -> None:
         logger.debug(
             f"ConsumerRebalanceListener received callback to assign partitions: {assigned}"
         )

@@ -2,14 +2,16 @@ from typing import Optional
 
 from pydantic import BaseModel
 
+
 class Destination(BaseModel):
     """Represents a destination. This will contain the topic information as well as the sub topic information, Further containing information whether
     this is a FIFO type of destination or not.
     """
+
     topic: str
     sub_topic: Optional[str] = None
     is_fifo: bool = False
-    
+
     @property
     def path(self) -> str:
         """Returns the full path of the destination. If a sub_topic is included it will be appended and returned
@@ -19,10 +21,10 @@ class Destination(BaseModel):
             str: topic including sub_topic if available
         """
         parts = [self.topic]
-        
+
         if self.sub_topic:
             parts.append(self.sub_topic)
-        
+
         return ".".join(parts)
 
     def __str__(self) -> str:

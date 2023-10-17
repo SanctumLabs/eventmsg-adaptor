@@ -7,7 +7,8 @@ from sanctumlabs.messageschema.messages.notifications.email.v1.events_pb2 import
 
 from eventmsg_adaptor import factory
 from samples import print_event
-from eventmsg_adaptor.config import AdapterConfigs, Config, KafkaConfig
+from eventmsg_adaptor.config import AdapterConfigs, Config
+from eventmsg_adaptor.config.kafka import KafkaConfig, KafkaSecurityProtocolConfig
 from eventmsg_adaptor.event_streams import AsyncEventStream
 from eventmsg_adaptor.schema import Event
 
@@ -17,10 +18,11 @@ config = Config(
     service_name="consumer_",
     adapters=AdapterConfigs(
         kafka=KafkaConfig(
-            bootstrap_server1_host="localhost",
-            bootstrap_server1_port=9092,
-            sasl_username="xxx",
-            sasl_password="xxx",
+            bootstrap_servers=["localhost:9092"],
+            security=KafkaSecurityProtocolConfig(
+                sasl_username="xxx",
+                sasl_password="xxx",
+            )
         )
     ),
 )

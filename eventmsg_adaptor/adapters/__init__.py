@@ -2,9 +2,12 @@ from typing import Union
 
 from confluent_kafka.schema_registry import SchemaRegistryClient
 
-from eventmsg_adaptor.config import Config, KafkaConfig
+from eventmsg_adaptor.config import Config
+from eventmsg_adaptor.config.kafka import KafkaConfig
 from eventmsg_adaptor.serializers import Serializer
-from eventmsg_adaptor.serializers.confluent_protobuf_serializer import ConfluentProtobufSerializer
+from eventmsg_adaptor.serializers.confluent_protobuf_serializer import (
+    ConfluentProtobufSerializer,
+)
 from eventmsg_adaptor.serializers.protobuf_serializer import ProtobufSerializer
 
 from .base import BaseAdapter, BaseAsyncAdapter
@@ -90,8 +93,12 @@ def _make_aiokafka_adapter(
         return AIOKafkaAdapter(
             bootstrap_servers=kafka_config.bootstrap_servers,
             group_id=base_config.service_name,
-            sasl_username=kafka_config.security.sasl_username if kafka_config.security else None,
-            sasl_password=kafka_config.security.sasl_password if kafka_config.security else None,
+            sasl_username=kafka_config.security.sasl_username
+            if kafka_config.security
+            else None,
+            sasl_password=kafka_config.security.sasl_password
+            if kafka_config.security
+            else None,
             serializer=serializer,
         )
 

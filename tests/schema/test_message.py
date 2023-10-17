@@ -3,6 +3,7 @@ from eventmsg_adaptor.schema import (
     SerializedMessage,
 )
 
+
 def test_serialized_message_message_as_str() -> None:
     message = SerializedMessage(
         serialization_format=SerializationFormat.JSON, message=b"hello world"

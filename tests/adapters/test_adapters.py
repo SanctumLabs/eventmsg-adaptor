@@ -3,14 +3,19 @@ from unittest import mock
 from unittest.mock import Mock, call, create_autospec
 
 import pytest
+
 # TODO: uncomment once the aiobotocore is installed correctly
 # from aiobotocore.session import AioSession
 # from mypy_boto3_sns import SNSServiceResource
 # from mypy_boto3_sqs import SQSServiceResource
 
 from eventmsg_adaptor.adapters import AIOKafkaAdapter, factory
-from eventmsg_adaptor.config import AdapterConfigs, Config, SQSConfig
-from eventmsg_adaptor.config.kafka import KafkaConfig, KafkaSecurityProtocolConfig, KafkaSchemaRegistryConfig
+from eventmsg_adaptor.config import AdapterConfigs, Config
+from eventmsg_adaptor.config.kafka import (
+    KafkaConfig,
+    KafkaSecurityProtocolConfig,
+    KafkaSchemaRegistryConfig,
+)
 
 
 def test_factory_raises_an_exception_when_no_adapters_are_configured() -> None:
@@ -261,7 +266,7 @@ async def test_factory_creates_an_aiokafka_adapter() -> None:
                 service_name="hello",
                 adapters=AdapterConfigs(
                     kafka=KafkaConfig(
-                        bootstrap_server1_host="localhost", bootstrap_server1_port=9092
+                        bootstrap_servers=["localhost:9092"]
                     )
                 ),
             ),
@@ -286,7 +291,7 @@ async def test_factory_creates_an_aiokafka_adapter_with_sasl_auth() -> None:
                         security=KafkaSecurityProtocolConfig(
                             sasl_username="foo",
                             sasl_password="bar",
-                        )
+                        ),
                     )
                 ),
             ),

@@ -13,11 +13,11 @@ from .destination import Destination
 
 
 class PydanticEventBody(BaseModel):
-    """Represents a Pydantic Event Body
-    """
+    """Represents a Pydantic Event Body"""
+
     class Config:
-        """Extra configuration specific to Pydantic allowing extra types to be added
-        """
+        """Extra configuration specific to Pydantic allowing extra types to be added"""
+
         extra = "allow"
 
     @property
@@ -43,8 +43,8 @@ EventBody = Union[PydanticEventBody, Message]
 
 
 class EventHeaders(BaseModel):
-    """Represents the headers on an Event in the stream
-    """
+    """Represents the headers on an Event in the stream"""
+
     id: UUID
     event_name: str
     destination: Destination
@@ -61,19 +61,19 @@ EventBody_T = TypeVar("EventBody_T", bound=EventBody)
 
 
 class Event(BaseModel, Generic[EventBody_T]):
-    """Represents the Event object in a stream
-    """
+    """Represents the Event object in a stream"""
+
     headers: EventHeaders
     body: EventBody_T
 
     class Config:
-        """Configuration that allows adding attributes to the event
-        """
+        """Configuration that allows adding attributes to the event"""
+
         arbitrary_types_allowed = True
 
     @property
     def payload(self) -> EventBody_T:
-        """Returns the body of the event. 
+        """Returns the body of the event.
 
         Returns:
             EventBody_T: body of event

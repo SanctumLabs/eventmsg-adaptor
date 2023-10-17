@@ -6,10 +6,16 @@ from uuid import UUID, uuid4
 
 from aiokafka import ConsumerRecord
 from google.protobuf.timestamp_pb2 import Timestamp
-from sanctumlabs.messageschema.events.envelope.v1.envelope_pb2 import EventFields, StandardMessageFields
+from sanctumlabs.messageschema.events.envelope.v1.envelope_pb2 import (
+    EventFields,
+    StandardMessageFields,
+)
 from sanctumlabs.messageschema.messages.notifications.email.v1.events_pb2 import EmailV1
 from sanctumlabs.messageschema.events.notifications.email.v1.events_pb2 import EmailSent
-from sanctumlabs.messageschema.events.notifications.email.v1.data_pb2 import Email, EmailStatus
+from sanctumlabs.messageschema.events.notifications.email.v1.data_pb2 import (
+    Email,
+    EmailStatus,
+)
 
 from eventmsg_adaptor.adapters import BaseAdapter
 from eventmsg_adaptor.event_streams import EventStream
@@ -103,9 +109,9 @@ EMAIL_SENT_PROTOBUF_MESSAGE = EmailV1(
             to="bot@example.com",
             subject="Testing 123",
             message="Robot Schematics",
-            status=EmailStatus.PENDING
+            status=EmailStatus.PENDING,
         )
-    )
+    ),
 )
 
 EMAIL_SENT_PROTOBUF_MESSAGE_AS_BYTES = b'\n0\n.\n$fae9ef15-06f0-46b9-95f1-2a75dd482687\x1a\x06\x08\xca\xc2\xdf\xfa\x05"v\nt\n$fae9ef15-06f0-46b9-95f1-2a75dd482687\x1a\x01b\x1a\x01o\x1a\x01t\x1a\x01@\x1a\x01e\x1a\x01x\x1a\x01a\x1a\x01m\x1a\x01p\x1a\x01l\x1a\x01e\x1a\x01.\x1a\x01c\x1a\x01o\x1a\x01m2\x0bTesting 123:\x10Robot SchematicsH\x0c'

@@ -23,10 +23,12 @@ from tests import (
 from eventmsg_adaptor.adapters.kafka.aiokafka import (
     AIOKafkaAdapter,
     ConsumerState,
-    DefaultRebalancer,
-    key_serializer,
 )
-from eventmsg_adaptor.serializers.confluent_protobuf_serializer import ConfluentProtobufSerializer
+from eventmsg_adaptor.adapters.kafka.default_rebalancer import DefaultRebalancer
+from eventmsg_adaptor.adapters.kafka.utils import key_serializer
+from eventmsg_adaptor.serializers.confluent_protobuf_serializer import (
+    ConfluentProtobufSerializer,
+)
 from eventmsg_adaptor.serializers.protobuf_serializer import ProtobufSerializer
 from eventmsg_adaptor.serializers.pydantic_serializer import PydanticSerializer
 from eventmsg_adaptor.schema import AsyncListener, Destination, ListenExpression
@@ -213,9 +215,7 @@ async def test_publish_always_safely_stops_producer_even_if_publish_fails(
     )
 
     with pytest.raises(Exception):
-        await adapter.publish(
-            Destination(topic="email_sent_v1"), EMAIL_SENT_EVENT
-        )
+        await adapter.publish(Destination(topic="email_sent_v1"), EMAIL_SENT_EVENT)
 
     mock_producer_constructor.assert_called_once_with(
         bootstrap_servers=["localhost:9092"],
@@ -293,9 +293,7 @@ async def test_listen_handles_subscribing_consumer_to_a_single_topic(
         enable_auto_commit=False,
     )
 
-    mock_consumer.subscribe.assert_called_once_with(
-        ["email_sent_v1"], listener=ANY
-    )
+    mock_consumer.subscribe.assert_called_once_with(["email_sent_v1"], listener=ANY)
 
     mock_consumer.start.assert_awaited_once()
 
@@ -401,11 +399,7 @@ async def test_listen_is_able_to_receive_a_protobuf_type_message(
 
         await adapter.close()
 
-        return {
-            TopicPartition("email_sent_v1", 0): [
-                EMAIL_SENT_CONSUMER_RECORD
-            ]
-        }
+        return {TopicPartition("email_sent_v1", 0): [EMAIL_SENT_CONSUMER_RECORD]}
 
     mock_consumer.getmany = AsyncMock(side_effect=getmany_side_effect)
 
@@ -640,17 +634,13 @@ async def test_listen_is_able_to_receive_a_batch_of_messages(
                     EMAIL_SENT_CONSUMER_RECORD,
                     EMAIL_SENT_CONSUMER_RECORD,
                 ],
-                TopicPartition("email_sent_v1", 1): [
-                    EMAIL_SENT_CONSUMER_RECORD
-                ],
+                TopicPartition("email_sent_v1", 1): [EMAIL_SENT_CONSUMER_RECORD],
             }
         else:
             await adapter.close()
 
             return {
-                TopicPartition("email_sent_v1", 0): [
-                    EMAIL_SENT_CONSUMER_RECORD
-                ],
+                TopicPartition("email_sent_v1", 0): [EMAIL_SENT_CONSUMER_RECORD],
             }
 
     mock_consumer.getmany = AsyncMock(side_effect=getmany_side_effect)
@@ -738,11 +728,7 @@ async def test_listen_handles_messages_correctly_during_a_consumer_rebalance(
 
             assert adapter.consumer_state == ConsumerState.RUNNING
 
-            return {
-                TopicPartition("email_sent_v1", 0): [
-                    EMAIL_SENT_CONSUMER_RECORD
-                ]
-            }
+            return {TopicPartition("email_sent_v1", 0): [EMAIL_SENT_CONSUMER_RECORD]}
         elif getmany_call_count == 2:
             # The 2nd time we do this call, we'll fake a re-balance and return a single message.
             # We expect this message to be ignored now since a re-balance is in progress.
@@ -758,9 +744,7 @@ async def test_listen_handles_messages_correctly_during_a_consumer_rebalance(
             await asyncio.sleep(0.1)
 
             return {
-                TopicPartition("email_sent_v1", 0): [
-                    EMAIL_SENT_CONSUMER_RECORD
-                ],
+                TopicPartition("email_sent_v1", 0): [EMAIL_SENT_CONSUMER_RECORD],
             }
         elif getmany_call_count == 3:
             # The 3rd time we do this call, we've finished our own re-balance handling and we need to pass control back
@@ -776,9 +760,7 @@ async def test_listen_handles_messages_correctly_during_a_consumer_rebalance(
             assert adapter.consumer_state == ConsumerState.RUNNING  # type: ignore[comparison-overlap]
 
             return {  # type: ignore[unreachable]
-                TopicPartition("email_sent_v1", 0): [
-                    EMAIL_SENT_CONSUMER_RECORD
-                ],
+                TopicPartition("email_sent_v1", 0): [EMAIL_SENT_CONSUMER_RECORD],
             }
         else:
             assert adapter.consumer_state == ConsumerState.RUNNING
@@ -997,11 +979,7 @@ async def test_listen_uses_sasl_auth_with_consumer_when_configured(
 
         await adapter.close()
 
-        return {
-            TopicPartition("email_sent_v1", 0): [
-                EMAIL_SENT_CONSUMER_RECORD
-            ]
-        }
+        return {TopicPartition("email_sent_v1", 0): [EMAIL_SENT_CONSUMER_RECORD]}
 
     mock_consumer.getmany = AsyncMock(side_effect=getmany_side_effect)
 
@@ -1198,9 +1176,7 @@ async def test_default_rebalancer_calls_user_on_partitions_revoked_callback_and_
         on_partitions_assigned_callback=on_partitions_assigned_callback,
     )
 
-    await rebalancer.on_partitions_revoked(
-        [TopicPartition("email_sent_v1", 0)]
-    )
+    await rebalancer.on_partitions_revoked([TopicPartition("email_sent_v1", 0)])
 
     on_partitions_revoked_callback.assert_awaited_once_with(
         [TopicPartition("email_sent_v1", 0)], rebalancer
@@ -1217,9 +1193,7 @@ async def test_default_rebalancer_calls_user_on_partitions_assigned_callback() -
         on_partitions_assigned_callback=on_partitions_assigned_callback,
     )
 
-    await rebalancer.on_partitions_assigned(
-        [TopicPartition("email_sent_v1", 0)]
-    )
+    await rebalancer.on_partitions_assigned([TopicPartition("email_sent_v1", 0)])
 
     on_partitions_assigned_callback.assert_awaited_once_with(
         [TopicPartition("email_sent_v1", 0)], rebalancer

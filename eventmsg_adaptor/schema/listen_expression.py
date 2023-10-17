@@ -7,6 +7,7 @@ from pydantic import BaseModel
 from .destination import Destination
 from .event import Event
 
+
 class ListenExpression(BaseModel):
     destination: Destination
     event_name: Optional[str] = None

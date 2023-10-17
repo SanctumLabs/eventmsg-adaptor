@@ -8,10 +8,16 @@ from uuid import UUID
 import pytest
 from google.protobuf.message import Message
 from google.protobuf.timestamp_pb2 import Timestamp
-from sanctumlabs.messageschema.events.envelope.v1.envelope_pb2 import EventFields, StandardMessageFields
+from sanctumlabs.messageschema.events.envelope.v1.envelope_pb2 import (
+    EventFields,
+    StandardMessageFields,
+)
 from sanctumlabs.messageschema.events.notifications.email.v1.events_pb2 import EmailSent
 from sanctumlabs.messageschema.messages.notifications.email.v1.events_pb2 import EmailV1
-from sanctumlabs.messageschema.events.notifications.email.v1.data_pb2 import Email, EmailStatus
+from sanctumlabs.messageschema.events.notifications.email.v1.data_pb2 import (
+    Email,
+    EmailStatus,
+)
 
 
 from tests import (
@@ -111,7 +117,8 @@ async def test_publish_event_with_protobuf_message_body_raises_an_exception_when
     event_stream = AsyncEventStream(adapter=adapter, event_source="my-service")
 
     with pytest.raises(
-        Exception, match="Are you sure you passed in a sanctumlabs-messageschema type message?"
+        Exception,
+        match="Are you sure you passed in a sanctumlabs-messageschema type message?",
     ):
         await event_stream.publish(
             destination=Destination(topic="email_sent_v1"),
@@ -170,7 +177,7 @@ async def test_publish_event_with_protobuf_message_body_updates_headers_any_body
                         to="bot@example.com",
                         subject="Testing 123",
                         message="Robot Schematics",
-                        status=EmailStatus.PENDING
+                        status=EmailStatus.PENDING,
                     )
                 ),
             ),

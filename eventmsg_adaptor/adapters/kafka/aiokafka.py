@@ -160,20 +160,20 @@ class AIOKafkaAdapter(BaseAsyncAdapter):
             topics = list(topic_mappings.keys())
 
             logger.debug(f"Subscribing consumer to topics {', '.join(topics)}")
-            
+
             self.consumer.subscribe(topics, listener=self._rebalance_listener)
-            
+
             logger.debug("Starting consumer")
-            
+
             await self.consumer.start()
-            
+
             logger.debug("Consumer has started successfully")
 
             self._consumer_state = ConsumerState.RUNNING
 
             try:
                 while self._is_consumer_running:
-                    data = await self.consumer.getmany(timeout_ms=1000)
+                    data = await self.consumer.getmany(timeout_ms=1000) # type: ignore[unreachable]
 
                     for topic_partition, messages in data.items():
                         for message in messages:

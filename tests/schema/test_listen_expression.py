@@ -1,10 +1,8 @@
 import pytest
 
 from tests import make_mock_event
-from eventmsg_adaptor.schema import (
-    Destination,
-    ListenExpression
-)
+from eventmsg_adaptor.schema import Destination, ListenExpression
+
 
 @pytest.mark.parametrize(
     "listen_expression, expected_str",

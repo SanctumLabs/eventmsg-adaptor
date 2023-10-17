@@ -56,7 +56,9 @@ def parse_listen_expression_str(listen_expression_str: str) -> ListenExpression:
     )
 
 
-def normalise_destination(destination: Union[str, Destination, Dict[str, str]]) -> Destination:
+def normalise_destination(
+    destination: Union[str, Destination, Dict[str, str]]
+) -> Destination:
     """Normalizes into a destination object. The passed in argument could be a string, Destination or a key-value pairing(dictionary) that could
     be mapped to a Destination. This validates and constructs a Destination object
 
@@ -117,7 +119,9 @@ def parse_destination_str(destination_str: str) -> Destination:
     return Destination(topic=topic, sub_topic=parsed_subtopic, is_fifo=is_fifo)
 
 
-def parse_event_name_and_version_from_protobuf_message(message: Message) -> Tuple[str, str]:
+def parse_event_name_and_version_from_protobuf_message(
+    message: Message,
+) -> Tuple[str, str]:
     """Parse a protobuf message extracting the event name and version of the message
 
     Args:
@@ -184,7 +188,9 @@ def normalise_version(version: str) -> str:
     return version
 
 
-def parse_event_body_type_from_subscribe_callback(callback: Union[EventCallback, AsyncEventCallback]) -> Type[EventBody]:
+def parse_event_body_type_from_subscribe_callback(
+    callback: Union[EventCallback, AsyncEventCallback]
+) -> Type[EventBody]:
     # This is a hack for compat with tests. If you inspect an `AsyncMock`, it raises a `unsupported callable` error.
     if isinstance(callback, AsyncMock):
         return PydanticEventBody

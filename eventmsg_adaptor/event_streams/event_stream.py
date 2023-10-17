@@ -50,18 +50,18 @@ class EventStream(BaseEventStream):
             Any: Catch all for what the publisher will return
         """
         destination = normalise_destination(destination)
-        
+
         event = self._make_outbound_event(
             destination=destination,
             event_body=event_body,
             timestamp=timestamp,
             correlation_id=correlation_id,
             group_id=group_id,
-            subject=subject
+            subject=subject,
         )
-        
+
         return self.publish_raw(destination, event)
-    
+
     def publish_raw(self, destination: Union[str, Destination], event: Event) -> Any:
         """Publishes the raw event using the provided adapter to the given destination
 
@@ -73,12 +73,16 @@ class EventStream(BaseEventStream):
             Any: Catch all for what the adapter will return when publishing event
         """
         destination = normalise_destination(destination=destination)
-        
+
         logger.debug(f"Publishing event {event} to destination {destination}")
-        
+
         return self._adapter.publish(destination=destination, event=event)
-    
-    def subscribe(self, listen_expression_str: str, exception_handler: Optional[ExceptionHandler] = None) -> Callable[[EventCallback], None]:
+
+    def subscribe(
+        self,
+        listen_expression_str: str,
+        exception_handler: Optional[ExceptionHandler] = None,
+    ) -> Callable[[EventCallback], None]:
         """Subscribes to topics given a listen expression string
 
         Args:
@@ -88,6 +92,7 @@ class EventStream(BaseEventStream):
         Returns:
             Callable[[EventCallback], None]: Decorator callback that handles subscription to topics
         """
+
         def decorator(func: EventCallback) -> None:
             """Decorator that parses listen expression and is used to pass messages to adaptor
 
@@ -96,7 +101,7 @@ class EventStream(BaseEventStream):
             """
             listen_expression = parse_listen_expression_str(listen_expression_str)
             event_body_type = parse_event_body_type_from_subscribe_callback(func)
-            
+
             def listener_callback(inbound_message: InboundMessage) -> None:
                 """listener callback for inbound messages
 
@@ -106,24 +111,26 @@ class EventStream(BaseEventStream):
                 try:
                     if listen_expression.matches(inbound_message.event):
                         logger.debug(f"Received event {inbound_message.event}")
-                        
+
                         func(inbound_message.event)
-                    
+
                     self._adapter.ack(inbound_message)
                 except Exception as exc:
                     self._adapter.nack(inbound_message)
-                    
+
                     if exception_handler:
                         exception_handler(exc)
                     else:
                         logger.exception(exc)
-            
-            logger.debug(f"Subscribing to events matching listen expression {listen_expression} ({listen_expression.model_dump()})")
+
+            logger.debug(
+                f"Subscribing to events matching listen expression {listen_expression} ({listen_expression.model_dump()})"
+            )
 
             self._adapter.subscribe(
                 listen_expression=listen_expression,
                 callback=listener_callback,
-                event_body_type=event_body_type
+                event_body_type=event_body_type,
             )
 
         return decorator

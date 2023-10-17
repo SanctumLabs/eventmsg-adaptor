@@ -15,7 +15,8 @@ from sanctumlabs.messageschema.events.notifications.email.v1.data_pb2 import (
 from sanctumlabs.messageschema.messages.notifications.email.v1.events_pb2 import EmailV1
 
 from eventmsg_adaptor import factory
-from eventmsg_adaptor.config import AdapterConfigs, Config, KafkaConfig
+from eventmsg_adaptor.config import AdapterConfigs, Config
+from eventmsg_adaptor.config.kafka import KafkaConfig, KafkaSecurityProtocolConfig, KafkaSchemaRegistryConfig
 from eventmsg_adaptor.event_streams import AsyncEventStream
 
 event_loop = asyncio.get_event_loop()
@@ -23,12 +24,15 @@ event_loop = asyncio.get_event_loop()
 config = Config(
     adapters=AdapterConfigs(
         kafka=KafkaConfig(
-            bootstrap_server1_host="localhost",
-            bootstrap_server1_port=9092,
-            sasl_username="xxx",
-            sasl_password="xxx",
-            schema_registry_url="https://localhost",
-            schema_registry_user_info="username:password",
+            bootstrap_servers=["localhost:9092"],
+            security=KafkaSecurityProtocolConfig(
+                sasl_username="xxx",
+                sasl_password="xxx",                
+            ),
+            schema_registry=KafkaSchemaRegistryConfig(
+                schema_registry_url="https://localhost",
+                schema_registry_user_info="username:password",
+            )
         )
     ),
 )

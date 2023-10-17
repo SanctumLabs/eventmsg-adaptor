@@ -21,22 +21,24 @@ class InboundMessage(BaseModel, Generic[RawMessage_T, MessageAttributes_T]):
         raw_message (Generic): Raw message representation
         attributes (Mapping): dictionary mapping of key value pair mapping of attributes of an inbound message
     """
+
     event: Event
     raw_message: RawMessage_T
     attributes: MessageAttributes_T
 
 
 class SerializationFormat(StrEnum):
-    """Different types of serialization formats to use
-    """
+    """Different types of serialization formats to use"""
+
     JSON = "json"
     PROTOBUF = "protobuf"
-    
-    
+
+
 class SerializedMessage(BaseModel):
     """Serialized message along with the serialization format used to serialized the message. This allows the consumers of a message to deserialize this
     message to the correct format. Note that the message itself is encoded as bytes.
     """
+
     serialization_format: SerializationFormat
     message: bytes
 

@@ -14,7 +14,6 @@ from eventmsg_adaptor.config import AdapterConfigs, Config
 from eventmsg_adaptor.config.kafka import (
     KafkaConfig,
     KafkaSecurityProtocolConfig,
-    KafkaSchemaRegistryConfig,
 )
 
 

@@ -4,6 +4,7 @@ from confluent_kafka.schema_registry import SchemaRegistryClient
 
 from eventmsg_adaptor.config import Config
 from eventmsg_adaptor.config.kafka import KafkaConfig
+from eventmsg_adaptor.config.sqs import SQSConfig
 from eventmsg_adaptor.serializers import Serializer
 from eventmsg_adaptor.serializers.confluent_protobuf_serializer import (
     ConfluentProtobufSerializer,
@@ -35,16 +36,18 @@ def factory(adapter_name: str, config: Config) -> Union[BaseAdapter, BaseAsyncAd
     if adapter_name == "sqs":
         if not adapter_configs.sqs:
             raise Exception("You must specify an SQSConfig when using the sqs adapter.")
-
-        return _make_sqs_adapter(sqs_config=adapter_configs.sqs, base_config=config)
+        
+        # TODO: remove comment to ignore any return once sqs adaptor is configured 
+        return _make_sqs_adapter(sqs_config=adapter_configs.sqs, base_config=config) # type: ignore[no-any-return]
 
     elif adapter_name == "aiosqs":
         if not adapter_configs.sqs:
             raise Exception(
                 "You must specify an SQSConfig when using the aiosqs adapter."
             )
-
-        return _make_aiosqs_adapter(sqs_config=adapter_configs.sqs, base_config=config)
+        
+        # TODO: remove comment to ignore any return once aiosqs adaptor is configured
+        return _make_aiosqs_adapter(sqs_config=adapter_configs.sqs, base_config=config)  # type: ignore[no-any-return]
 
     elif adapter_name == "aiokafka":
         if not adapter_configs.kafka:
@@ -59,11 +62,13 @@ def factory(adapter_name: str, config: Config) -> Union[BaseAdapter, BaseAsyncAd
         raise Exception(f"The adapter {adapter_name} is not supported.")
 
 
-def _make_sqs_adapter(sqs_config, base_config: Config):
+# TODO: configure sqs adaptor
+def _make_sqs_adapter(sqs_config: SQSConfig, base_config: Config): # type: ignore[no-untyped-def]
     pass
 
 
-def _make_aiosqs_adapter(sqs_config, base_config: Config):
+# TODO: configure aiosqs adaptor
+def _make_aiosqs_adapter(sqs_config: SQSConfig, base_config: Config): # type: ignore[no-untyped-def]
     pass
 
 

@@ -2,12 +2,8 @@ from typing import Union
 
 import pytest
 
-from eventmsg_adaptor.schema import Destination, ListenExpression
-from eventmsg_adaptor.utils import (
-    normalise_destination,
-    parse_destination_str,
-    parse_listen_expression_str,
-)
+from eventmsg_adaptor.schema import Destination
+from eventmsg_adaptor.utils import normalise_destination
 
 
 @pytest.mark.parametrize(

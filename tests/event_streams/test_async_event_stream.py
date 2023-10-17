@@ -30,7 +30,6 @@ from tests import (
     ORDER_PLACED_INBOUND_MESSAGE,
     EMAIL_SENT_EVENT,
     EMAIL_SENT_PROTOBUF_MESSAGE,
-    EMAIL_SENT_PROTOBUF_MESSAGE,
 )
 from eventmsg_adaptor.adapters import BaseAsyncAdapter
 from eventmsg_adaptor.event_streams import AsyncEventStream

@@ -22,7 +22,7 @@ config = Config(
             security=KafkaSecurityProtocolConfig(
                 sasl_username="xxx",
                 sasl_password="xxx",
-            )
+            ),
         )
     ),
 )

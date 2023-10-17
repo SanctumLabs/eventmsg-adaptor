@@ -10,7 +10,7 @@ def test_event_payload_returns_body_for_backwards_compatibility() -> None:
 
 
 def test_pydantic_event_body_allows_for_arbitrary_fields() -> None:
-    event_body = PydanticEventBody(foo="bar") # type: ignore[call-arg]
+    event_body = PydanticEventBody(foo="bar")  # type: ignore[call-arg]
 
     assert event_body.foo == "bar"  # type: ignore[attr-defined]
 

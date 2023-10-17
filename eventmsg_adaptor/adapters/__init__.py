@@ -36,16 +36,16 @@ def factory(adapter_name: str, config: Config) -> Union[BaseAdapter, BaseAsyncAd
     if adapter_name == "sqs":
         if not adapter_configs.sqs:
             raise Exception("You must specify an SQSConfig when using the sqs adapter.")
-        
-        # TODO: remove comment to ignore any return once sqs adaptor is configured 
-        return _make_sqs_adapter(sqs_config=adapter_configs.sqs, base_config=config) # type: ignore[no-any-return]
+
+        # TODO: remove comment to ignore any return once sqs adaptor is configured
+        return _make_sqs_adapter(sqs_config=adapter_configs.sqs, base_config=config)  # type: ignore[no-any-return]
 
     elif adapter_name == "aiosqs":
         if not adapter_configs.sqs:
             raise Exception(
                 "You must specify an SQSConfig when using the aiosqs adapter."
             )
-        
+
         # TODO: remove comment to ignore any return once aiosqs adaptor is configured
         return _make_aiosqs_adapter(sqs_config=adapter_configs.sqs, base_config=config)  # type: ignore[no-any-return]
 
@@ -63,12 +63,12 @@ def factory(adapter_name: str, config: Config) -> Union[BaseAdapter, BaseAsyncAd
 
 
 # TODO: configure sqs adaptor
-def _make_sqs_adapter(sqs_config: SQSConfig, base_config: Config): # type: ignore[no-untyped-def]
+def _make_sqs_adapter(sqs_config: SQSConfig, base_config: Config):  # type: ignore[no-untyped-def]
     pass
 
 
 # TODO: configure aiosqs adaptor
-def _make_aiosqs_adapter(sqs_config: SQSConfig, base_config: Config): # type: ignore[no-untyped-def]
+def _make_aiosqs_adapter(sqs_config: SQSConfig, base_config: Config):  # type: ignore[no-untyped-def]
     pass
 
 
@@ -76,7 +76,7 @@ def _make_aiokafka_adapter(
     kafka_config: KafkaConfig, base_config: Config
 ) -> AIOKafkaAdapter:
     try:
-        import aiokafka
+        import aiokafka  # noqa: F401
 
         serializer: Serializer
 

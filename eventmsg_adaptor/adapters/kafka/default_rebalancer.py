@@ -16,7 +16,7 @@ PartitionsAssignedCallback = Callable[
 ]
 
 
-class DefaultRebalancer(ConsumerRebalanceListener): # type: ignore[misc]
+class DefaultRebalancer(ConsumerRebalanceListener):  # type: ignore[misc]
     def __init__(
         self,
         on_partitions_revoked_callback: Optional[PartitionsRevokedCallback],

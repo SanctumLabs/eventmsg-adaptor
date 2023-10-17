@@ -70,7 +70,7 @@ def normalise_destination(
     """
     if isinstance(destination, Destination):
         return destination
-    elif type(destination) == str:
+    elif isinstance(destination, str):
         return parse_destination_str(destination)
     else:
         return Destination.model_validate(destination)

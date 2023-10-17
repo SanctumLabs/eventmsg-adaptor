@@ -173,7 +173,7 @@ class AIOKafkaAdapter(BaseAsyncAdapter):
 
             try:
                 while self._is_consumer_running:
-                    data = await self.consumer.getmany(timeout_ms=1000) # type: ignore[unreachable]
+                    data = await self.consumer.getmany(timeout_ms=1000)  # type: ignore[unreachable]
 
                     for topic_partition, messages in data.items():
                         for message in messages:

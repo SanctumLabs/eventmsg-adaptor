@@ -1,6 +1,4 @@
-from typing import Any, cast
-from unittest import mock
-from unittest.mock import Mock, call, create_autospec
+from typing import cast
 
 import pytest
 
@@ -264,9 +262,7 @@ async def test_factory_creates_an_aiokafka_adapter() -> None:
             Config(
                 service_name="hello",
                 adapters=AdapterConfigs(
-                    kafka=KafkaConfig(
-                        bootstrap_servers=["localhost:9092"]
-                    )
+                    kafka=KafkaConfig(bootstrap_servers=["localhost:9092"])
                 ),
             ),
         ),

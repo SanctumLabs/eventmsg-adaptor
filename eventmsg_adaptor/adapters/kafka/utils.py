@@ -90,7 +90,7 @@ def parse_event_headers(event_body: EventBody, message: ConsumerRecord) -> Event
         parsed_kafka_headers = parse_kafka_headers(message.headers)
 
         if "destination" in parsed_kafka_headers:
-            parsed_kafka_headers["destination"] = normalise_destination( # type: ignore[assignment]
+            parsed_kafka_headers["destination"] = normalise_destination(  # type: ignore[assignment]
                 parsed_kafka_headers["destination"]
             )
 

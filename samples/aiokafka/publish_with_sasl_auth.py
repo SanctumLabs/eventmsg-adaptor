@@ -27,8 +27,8 @@ config = Config(
             bootstrap_servers=["localhost:9092"],
             security=KafkaSecurityProtocolConfig(
                 sasl_username="xxx",
-                sasl_password="xxx",                
-            )
+                sasl_password="xxx",
+            ),
         )
     ),
 )

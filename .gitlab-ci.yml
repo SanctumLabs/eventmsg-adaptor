@@ -148,6 +148,7 @@ release_job:
 publish-pypi:
   stage: package
   image: python:3.11
+  script:
     - make publish-gitlab
   only:
     - tags

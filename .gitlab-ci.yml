@@ -30,6 +30,7 @@ before_script:
   rules:
     - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
     - if: "$CI_COMMIT_BRANCH"
+    - if: "$CI_COMMIT_TAG"
 
 lint-mypy:
   extends: ".lint"
@@ -61,6 +62,7 @@ sast:
   rules:
     - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
     - if: "$CI_COMMIT_BRANCH"
+    - if: "$CI_COMMIT_TAG"
 
 test-3.9:
   extends: ".test"
@@ -96,6 +98,7 @@ test-3.11:
   rules:
     - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
     - if: "$CI_COMMIT_BRANCH"
+    - if: "$CI_COMMIT_TAG"
 
 build-3.9:
   extends: ".build"
@@ -148,6 +151,10 @@ release_job:
 publish-pypi:
   stage: package
   image: python:3.11
+  needs:
+    - build-3.9
+    - build-3.10
+    - build-3.11
   script:
     - make publish-gitlab
   only:

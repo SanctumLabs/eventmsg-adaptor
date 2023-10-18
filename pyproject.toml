@@ -1,7 +1,8 @@
 [tool.poetry]
 name = "eventmsg_adaptor"
+# This version field is not being used. The version field is dynamically updated as below
 version = "0.0.0"
-description = "Message Publisher and Subscriber library"
+description = "Event & Message adapter library & protocol & implementation over publisher/subscriber pattern"
 authors = ["Sanctum Labs <sanctumlabs@gmail.com>"]
 readme = "README.md"
 
@@ -20,7 +21,6 @@ types-aiobotocore = {extras = ["sns"], version = "^2.6.0"}
 requests = "^2.31.0"
 pydantic-settings = "^2.0.3"
 
-
 [tool.poetry.group.dev.dependencies]
 mypy = "^1.5.1"
 pytest = "^7.4.2"
@@ -37,8 +37,13 @@ flake8 = "^6.1.0"
 [tool.poetry.extras]
 adapters = ["boto3", "aiobotocore", "aiokafka", "confluent-kafka"]
 
+# reference: https://github.com/mtkennerly/poetry-dynamic-versioning
 [tool.poetry-dynamic-versioning]
 enable = true
+vcs = "git"
+style = "semver"
+latest-tag = true
+pattern = "^((?P<epoch>\\d+)!)?(?P<base>\\d+(\\.\\d+)*)"
 
 [tool.mypy]
 disallow_incomplete_defs = true

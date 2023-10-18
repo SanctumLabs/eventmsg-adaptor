@@ -43,6 +43,10 @@ lint-mypy: ## lints project using mypy
 .PHONY: lint
 lint: lint-black lint-flake8 lint-mypy
 
+.PHONY: clean
+clean: ## removes dist folder
+	rm -rf dist
+
 .PHONY: build
 build: ## builds project
 	poetry self add "poetry-dynamic-versioning[plugin]"

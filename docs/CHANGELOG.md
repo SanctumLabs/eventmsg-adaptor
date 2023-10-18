@@ -1,3 +1,10 @@
+# [1.1.0](https://gitlab.com/sanctumlabs/libraries/eventmsg_adaptor_py/compare/1.0.0...1.1.0) (2023-10-18)
+
+
+### Features
+
+* **versioning:** dynamic versioning ([d0abb99](https://gitlab.com/sanctumlabs/libraries/eventmsg_adaptor_py/commit/d0abb991839abb1521a6aa700df4095e5dcb508e))
+
 # 1.0.0 (2023-10-18)
 
 

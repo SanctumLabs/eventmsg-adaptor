@@ -15,6 +15,7 @@ from eventmsg_adaptor.adapters.sqs.schema import MessageTypeDef
 
 logger = logging.getLogger(__name__)
 
+
 class BaseSQSAdapter(ABC):
     def __init__(
         self,

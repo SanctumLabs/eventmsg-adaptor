@@ -9,11 +9,12 @@ from mypy_boto3_sns import SNSServiceResource
 from mypy_boto3_sqs import SQSServiceResource
 
 from eventmsg_adaptor.adapters import AIOKafkaAdapter, factory, SQSAdapter
-from eventmsg_adaptor.config import AdapterConfigs, Config, SQSConfig
+from eventmsg_adaptor.config import AdapterConfigs, Config
 from eventmsg_adaptor.config.kafka import (
     KafkaConfig,
     KafkaSecurityProtocolConfig,
 )
+from eventmsg_adaptor.config.sqs import SQSConfig
 
 
 def test_factory_raises_an_exception_when_no_adapters_are_configured() -> None:
@@ -118,6 +119,7 @@ def test_factory_creates_an_sqs_adapter(mock_create_boto3_resource: Mock) -> Non
         ],
     )
 
+
 @mock.patch("boto3.resource")
 def test_factory_creates_an_sqs_adapter_when_no_environment_is_set(
     mock_create_boto3_resource: Mock,
@@ -177,6 +179,7 @@ def test_factory_creates_an_sqs_adapter_when_no_environment_is_set(
             ),
         ],
     )
+
 
 # TODO: uncomment once aiobotocore is setup & there is an AIOSQSAdaptor
 # @mock.patch("aiobotocore.session.get_session")

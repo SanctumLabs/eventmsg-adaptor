@@ -68,35 +68,37 @@ def factory(adapter_name: str, config: Config) -> Union[BaseAdapter, BaseAsyncAd
 def _make_sqs_adapter(sqs_config: SQSConfig, base_config: Config) -> SQSAdapter:
     try:
         import boto3
-        
+
         sqs: SQSServiceResource = boto3.resource(
             "sqs",
             region_name=sqs_config.region_name,
             aws_secret_access_key=sqs_config.secret_key,
-            aws_access_key_id=sqs_config.access_key_id
+            aws_access_key_id=sqs_config.access_key_id,
         )
-        
+
         sns: SNSServiceResource = boto3.resource(
             "sns",
             region_name=sqs_config.region_name,
             aws_secret_access_key=sqs_config.secret_key,
-            aws_access_key_id=sqs_config.access_key_id
+            aws_access_key_id=sqs_config.access_key_id,
         )
-        
+
         if sqs_config.environment:
             subscription_prefix = f"{sqs_config.environment}-{base_config.service_name}"
         else:
             subscription_prefix = base_config.service_name
-        
+
         return SQSAdapter(
             sqs=sqs,
             sns=sns,
             serializer=PydanticSerializer(),
             topic_prefix=sqs_config.environment,
-            subscription_prefix=subscription_prefix
+            subscription_prefix=subscription_prefix,
         )
     except ImportError:
-        raise Exception("The boto3 package is not instealled. Please run 'poetry add boto3'.")
+        raise Exception(
+            "The boto3 package is not instealled. Please run 'poetry add boto3'."
+        )
 
 
 # TODO: configure aiosqs adaptor

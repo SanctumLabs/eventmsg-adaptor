@@ -62,7 +62,7 @@ coverage: ## runs tests with coverage enabled and generates a report
 
 .PHONY: publish-gitlab
 publish-gitlab: build ## publish python package to Gitlab package registry
-	TWINE_PASSWORD=${CI_JOB_TOKEN} TWINE_USERNAME=gitlab-ci-token twine upload --repository-url ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/pypi dist/*`
+	TWINE_PASSWORD=${CI_JOB_TOKEN} TWINE_USERNAME=gitlab-ci-token twine upload --repository-url ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/pypi dist/*
 
 .PHONY: publish-pypi
 publish-pypi: build ## publish python package to PyPI

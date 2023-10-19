@@ -156,6 +156,7 @@ publish-pypi:
     - build-3.10
     - build-3.11
   script:
+    - pip install twine
     - make publish-gitlab
   only:
     - tags

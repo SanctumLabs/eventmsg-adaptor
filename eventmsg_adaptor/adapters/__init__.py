@@ -1,6 +1,8 @@
 from typing import Union
 
 from confluent_kafka.schema_registry import SchemaRegistryClient
+from mypy_boto3_sns import SNSServiceResource
+from mypy_boto3_sqs import SQSServiceResource
 
 from eventmsg_adaptor.config import Config
 from eventmsg_adaptor.config.kafka import KafkaConfig
@@ -10,9 +12,11 @@ from eventmsg_adaptor.serializers.confluent_protobuf_serializer import (
     ConfluentProtobufSerializer,
 )
 from eventmsg_adaptor.serializers.protobuf_serializer import ProtobufSerializer
+from eventmsg_adaptor.serializers.pydantic_serializer import PydanticSerializer
 
-from .base import BaseAdapter, BaseAsyncAdapter
-from .kafka.aiokafka import AIOKafkaAdapter
+from eventmsg_adaptor.adapters.base import BaseAdapter, BaseAsyncAdapter
+from eventmsg_adaptor.adapters.kafka.aiokafka import AIOKafkaAdapter
+from eventmsg_adaptor.adapters.sqs.sqs import SQSAdapter
 
 
 def factory(adapter_name: str, config: Config) -> Union[BaseAdapter, BaseAsyncAdapter]:
@@ -37,8 +41,7 @@ def factory(adapter_name: str, config: Config) -> Union[BaseAdapter, BaseAsyncAd
         if not adapter_configs.sqs:
             raise Exception("You must specify an SQSConfig when using the sqs adapter.")
 
-        # TODO: remove comment to ignore any return once sqs adaptor is configured
-        return _make_sqs_adapter(sqs_config=adapter_configs.sqs, base_config=config)  # type: ignore[no-any-return]
+        return _make_sqs_adapter(sqs_config=adapter_configs.sqs, base_config=config)
 
     elif adapter_name == "aiosqs":
         if not adapter_configs.sqs:
@@ -62,9 +65,38 @@ def factory(adapter_name: str, config: Config) -> Union[BaseAdapter, BaseAsyncAd
         raise Exception(f"The adapter {adapter_name} is not supported.")
 
 
-# TODO: configure sqs adaptor
-def _make_sqs_adapter(sqs_config: SQSConfig, base_config: Config):  # type: ignore[no-untyped-def]
-    pass
+def _make_sqs_adapter(sqs_config: SQSConfig, base_config: Config) -> SQSAdapter:
+    try:
+        import boto3
+        
+        sqs: SQSServiceResource = boto3.resource(
+            "sqs",
+            region_name=sqs_config.region_name,
+            aws_secret_access_key=sqs_config.secret_key,
+            aws_access_key_id=sqs_config.access_key_id
+        )
+        
+        sns: SNSServiceResource = boto3.resource(
+            "sns",
+            region_name=sqs_config.region_name,
+            aws_secret_access_key=sqs_config.secret_key,
+            aws_access_key_id=sqs_config.access_key_id
+        )
+        
+        if sqs_config.environment:
+            subscription_prefix = f"{sqs_config.environment}-{base_config.service_name}"
+        else:
+            subscription_prefix = base_config.service_name
+        
+        return SQSAdapter(
+            sqs=sqs,
+            sns=sns,
+            serializer=PydanticSerializer(),
+            topic_prefix=sqs_config.environment,
+            subscription_prefix=subscription_prefix
+        )
+    except ImportError:
+        raise Exception("The boto3 package is not instealled. Please run 'poetry add boto3'.")
 
 
 # TODO: configure aiosqs adaptor

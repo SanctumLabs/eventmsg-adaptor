@@ -1,14 +1,15 @@
-from typing import cast
-
+from typing import cast, Any
+from unittest import mock
+from unittest.mock import Mock, call, create_autospec
 import pytest
 
 # TODO: uncomment once the aiobotocore is installed correctly
 # from aiobotocore.session import AioSession
-# from mypy_boto3_sns import SNSServiceResource
-# from mypy_boto3_sqs import SQSServiceResource
+from mypy_boto3_sns import SNSServiceResource
+from mypy_boto3_sqs import SQSServiceResource
 
-from eventmsg_adaptor.adapters import AIOKafkaAdapter, factory
-from eventmsg_adaptor.config import AdapterConfigs, Config
+from eventmsg_adaptor.adapters import AIOKafkaAdapter, factory, SQSAdapter
+from eventmsg_adaptor.config import AdapterConfigs, Config, SQSConfig
 from eventmsg_adaptor.config.kafka import (
     KafkaConfig,
     KafkaSecurityProtocolConfig,
@@ -58,126 +59,124 @@ def test_factory_raises_an_exception_when_adapter_type_is_not_supported() -> Non
         factory("foobar", Config())
 
 
-# TODO: uncomment once there is an SQSAdapter
-# @mock.patch("boto3.resource")
-# def test_factory_creates_an_sqs_adapter(mock_create_boto3_resource: Mock) -> None:
-#     sqs_resource = create_autospec(SQSServiceResource)
-#     sns_resource = create_autospec(SNSServiceResource)
+@mock.patch("boto3.resource")
+def test_factory_creates_an_sqs_adapter(mock_create_boto3_resource: Mock) -> None:
+    sqs_resource = create_autospec(SQSServiceResource)
+    sns_resource = create_autospec(SNSServiceResource)
 
-#     def create_resource_side_effect(
-#         service_name: str, *args: Any, **kwargs: Any
-#     ) -> Any:
-#         if service_name == "sqs":
-#             return sqs_resource
-#         elif service_name == "sns":
-#             return sns_resource
-#         else:
-#             raise Exception(f"The resource {service_name} is unknown.")
+    def create_resource_side_effect(
+        service_name: str, *args: Any, **kwargs: Any
+    ) -> Any:
+        if service_name == "sqs":
+            return sqs_resource
+        elif service_name == "sns":
+            return sns_resource
+        else:
+            raise Exception(f"The resource {service_name} is unknown.")
 
-#     mock_create_boto3_resource.side_effect = create_resource_side_effect
+    mock_create_boto3_resource.side_effect = create_resource_side_effect
 
-#     adapter = cast(
-#         SQSAdapter,
-#         factory(
-#             "sqs",
-#             Config(
-#                 service_name="hello",
-#                 adapters=AdapterConfigs(
-#                     sqs=SQSConfig(
-#                         region_name="eu-west-2",
-#                         access_key_id="MyAccessKey",
-#                         secret_key="ThisIsVerySecret",
-#                         environment="dev",
-#                     )
-#                 ),
-#             ),
-#         ),
-#     )
+    adapter = cast(
+        SQSAdapter,
+        factory(
+            "sqs",
+            Config(
+                service_name="hello",
+                adapters=AdapterConfigs(
+                    sqs=SQSConfig(
+                        region_name="eu-west-2",
+                        access_key_id="MyAccessKey",
+                        secret_key="ThisIsVerySecret",
+                        environment="dev",
+                    )
+                ),
+            ),
+        ),
+    )
 
-#     assert adapter.sqs is sqs_resource
-#     assert adapter.sns is sns_resource
-#     assert adapter.topic_prefix == "dev"
-#     assert adapter.subscription_prefix == "dev-hello"
-#     assert adapter.subscriber_wait_time_in_seconds == 2
-#     assert adapter.max_number_of_messages_to_return == 5
+    assert adapter.sqs is sqs_resource
+    assert adapter.sns is sns_resource
+    assert adapter.topic_prefix == "dev"
+    assert adapter.subscription_prefix == "dev-hello"
+    assert adapter.subscriber_wait_time_in_seconds == 2
+    assert adapter.max_number_of_messages_to_return == 5
 
-#     mock_create_boto3_resource.assert_has_calls(
-#         [
-#             call(
-#                 "sqs",
-#                 region_name="eu-west-2",
-#                 aws_secret_access_key="ThisIsVerySecret",
-#                 aws_access_key_id="MyAccessKey",
-#             ),
-#             call(
-#                 "sns",
-#                 region_name="eu-west-2",
-#                 aws_secret_access_key="ThisIsVerySecret",
-#                 aws_access_key_id="MyAccessKey",
-#             ),
-#         ],
-#     )
-#
-#
-# @mock.patch("boto3.resource")
-# def test_factory_creates_an_sqs_adapter_when_no_environment_is_set(
-#     mock_create_boto3_resource: Mock,
-# ) -> None:
-#     sqs_resource = create_autospec(SQSServiceResource)
-#     sns_resource = create_autospec(SNSServiceResource)
+    mock_create_boto3_resource.assert_has_calls(
+        [
+            call(
+                "sqs",
+                region_name="eu-west-2",
+                aws_secret_access_key="ThisIsVerySecret",
+                aws_access_key_id="MyAccessKey",
+            ),
+            call(
+                "sns",
+                region_name="eu-west-2",
+                aws_secret_access_key="ThisIsVerySecret",
+                aws_access_key_id="MyAccessKey",
+            ),
+        ],
+    )
 
-#     def create_resource_side_effect(
-#         service_name: str, *args: Any, **kwargs: Any
-#     ) -> Any:
-#         if service_name == "sqs":
-#             return sqs_resource
-#         elif service_name == "sns":
-#             return sns_resource
-#         else:
-#             raise Exception(f"The resource {service_name} is unknown.")
+@mock.patch("boto3.resource")
+def test_factory_creates_an_sqs_adapter_when_no_environment_is_set(
+    mock_create_boto3_resource: Mock,
+) -> None:
+    sqs_resource = create_autospec(SQSServiceResource)
+    sns_resource = create_autospec(SNSServiceResource)
 
-#     mock_create_boto3_resource.side_effect = create_resource_side_effect
+    def create_resource_side_effect(
+        service_name: str, *args: Any, **kwargs: Any
+    ) -> Any:
+        if service_name == "sqs":
+            return sqs_resource
+        elif service_name == "sns":
+            return sns_resource
+        else:
+            raise Exception(f"The resource {service_name} is unknown.")
 
-#     adapter = cast(
-#         SQSAdapter,
-#         factory(
-#             "sqs",
-#             Config(
-#                 service_name="hello",
-#                 adapters=AdapterConfigs(
-#                     sqs=SQSConfig(
-#                         region_name="eu-west-2",
-#                         access_key_id="MyAccessKey",
-#                         secret_key="ThisIsVerySecret",
-#                     )
-#                 ),
-#             ),
-#         ),
-#     )
+    mock_create_boto3_resource.side_effect = create_resource_side_effect
 
-#     assert adapter.sqs is sqs_resource
-#     assert adapter.sns is sns_resource
-#     assert adapter.topic_prefix is None
-#     assert adapter.subscription_prefix == "hello"
-#     assert adapter.subscriber_wait_time_in_seconds == 2
-#     assert adapter.max_number_of_messages_to_return == 5
+    adapter = cast(
+        SQSAdapter,
+        factory(
+            "sqs",
+            Config(
+                service_name="hello",
+                adapters=AdapterConfigs(
+                    sqs=SQSConfig(
+                        region_name="eu-west-2",
+                        access_key_id="MyAccessKey",
+                        secret_key="ThisIsVerySecret",
+                    )
+                ),
+            ),
+        ),
+    )
 
-#     mock_create_boto3_resource.assert_has_calls(
-#         [
-#             call(
-#                 "sqs",
-#                 region_name="eu-west-2",
-#                 aws_secret_access_key="ThisIsVerySecret",
-#                 aws_access_key_id="MyAccessKey",
-#             ),
-#             call(
-#                 "sns",
-#                 region_name="eu-west-2",
-#                 aws_secret_access_key="ThisIsVerySecret",
-#                 aws_access_key_id="MyAccessKey",
-#             ),
-#         ],
-#     )
+    assert adapter.sqs is sqs_resource
+    assert adapter.sns is sns_resource
+    assert adapter.topic_prefix is None
+    assert adapter.subscription_prefix == "hello"
+    assert adapter.subscriber_wait_time_in_seconds == 2
+    assert adapter.max_number_of_messages_to_return == 5
+
+    mock_create_boto3_resource.assert_has_calls(
+        [
+            call(
+                "sqs",
+                region_name="eu-west-2",
+                aws_secret_access_key="ThisIsVerySecret",
+                aws_access_key_id="MyAccessKey",
+            ),
+            call(
+                "sns",
+                region_name="eu-west-2",
+                aws_secret_access_key="ThisIsVerySecret",
+                aws_access_key_id="MyAccessKey",
+            ),
+        ],
+    )
 
 # TODO: uncomment once aiobotocore is setup & there is an AIOSQSAdaptor
 # @mock.patch("aiobotocore.session.get_session")

@@ -1,3 +1,10 @@
+## [1.1.1](https://gitlab.com/sanctumlabs/libraries/eventmsg_adaptor_py/compare/1.1.0...1.1.1) (2023-10-19)
+
+
+### Bug Fixes
+
+* **releases:** update release tagging flow ([bf74abe](https://gitlab.com/sanctumlabs/libraries/eventmsg_adaptor_py/commit/bf74abe8eb839f38bfaa0acc4b5a018bb3a1a969))
+
 # [1.1.0](https://gitlab.com/sanctumlabs/libraries/eventmsg_adaptor_py/compare/1.0.0...1.1.0) (2023-10-18)
 
 

@@ -1,3 +1,10 @@
+# [1.3.0](https://gitlab.com/sanctumlabs/libraries/eventmsg_adaptor_py/compare/1.2.0...1.3.0) (2023-10-20)
+
+
+### Features
+
+* **samples:** sqs sample code ([5f1d00a](https://gitlab.com/sanctumlabs/libraries/eventmsg_adaptor_py/commit/5f1d00ae9fdce7eaca6ee3bf1cccf183969e9f81))
+
 # [1.2.0](https://gitlab.com/sanctumlabs/libraries/eventmsg_adaptor_py/compare/1.1.1...1.2.0) (2023-10-19)
 
 

@@ -162,6 +162,7 @@ publish-pypi:
     - tags
 
 slack-success:
+  before_script: []
   needs:
     - job: publish-tag
       optional: true
@@ -171,6 +172,7 @@ slack-success:
       optional: true
 
 slack-failure:
+  before_script: []
   needs:
     - job: publish-tag
       optional: true

@@ -11,6 +11,8 @@ include:
   - template: Security/SAST.gitlab-ci.yml
   - project: sanctumlabs/tools/ci-workflows
     file: .gitlab/templates/slack-notification.yml
+  - project: sanctumlabs/tools/ci-workflows
+    file: .gitlab/templates/dependabot.yml
 
 stages:
   - lint
@@ -161,6 +163,13 @@ publish-pypi:
     - make publish-gitlab
   only:
     - tags
+
+# This job runs on a schedule to update package dependencies
+dependency-updater:
+  extends: .dependabot
+  variables:
+    PACKAGE_MANAGER: pip
+    SCHEDULE_NAME: dependabot
 
 slack-success:
   before_script: []

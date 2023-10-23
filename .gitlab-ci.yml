@@ -169,7 +169,7 @@ dependency-updater:
   extends: .dependabot
   variables:
     PACKAGE_MANAGER: pip
-    SCHEDULE_NAME: dependabot
+    DEPENDABOT_SCHEDULE_NAME: dependabot
 
 slack-success:
   before_script: []
